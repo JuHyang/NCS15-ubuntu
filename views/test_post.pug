@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    meta(charset = 'utf-8')
+  body
+    form(action='/login' method = 'post')
+      p
+        input(type = 'text' name = 'studentNum')
+      p
+        input(type = 'password' name = 'password')
+      p
+        input(type = 'submit')
+    form(action='/lms/data' method = 'post')
+      p
+        input(type = 'text' name = 'studentNum')
+      p
+        input(type = 'password' name = 'password')
+      p
+        input(type = 'submit')

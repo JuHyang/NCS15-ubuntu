@@ -1,0 +1,17 @@
+{
+  "name": "kaulife",
+  "version": "1.0.0",
+  "description": "backend part",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "pug": "^2.0.0-rc.4",
+    "puppeteer": "^0.13.0"
+  }
+}
