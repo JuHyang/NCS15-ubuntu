@@ -1,4 +1,4 @@
-var express = require ('express');
+﻿var express = require ('express');
 var bodyParser = require('body-parser');
 const puppeteer = require('puppeteer');
 
@@ -45,7 +45,7 @@ app.post("/login", function(req,res){
   var pwd_req = req.body.password;
 
   (async () => {
-    const browser = await puppeteer.launch({headless : false,args: ['--no-sandbox', '--disable-setuid-sandbox']});
+    const browser = await puppeteer.launch({headless : true,args: ['--no-sandbox', '--disable-setuid-sandbox']});
     browser.newPage({ context: 'another-context' })
     const page = await browser.newPage();
     page.on('dialog', async dialog => {
@@ -86,7 +86,7 @@ app.post("/lms/data", function(req,res){
     await page.type("[name=p_pwd]", pwd_req) // 비밀번호 찾아서 넣기
     await page.click("body > div.aside > div.articel > table:nth-child(2) > tbody > tr:nth-child(3) > td > form > table > tbody > tr:nth-child(3) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr > td:nth-child(2) > a > img") // 로그인 버튼 클릭
 
-    필요한 정보 받아오기
+    //필요한 정보 받아오기
     await page.waitForSelector("#wrapper > header.navbar > nav > div > a.brand");
     if (await page.$('span.postsincelogin') != null) {
       //[포럼]정보 받아오기
