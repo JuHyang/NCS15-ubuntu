@@ -2,6 +2,17 @@
 var bodyParser = require('body-parser');
 const puppeteer = require('puppeteer');
 
+var mysql = require('mysql');
+
+var conn = mysql.createConnection({
+  host      : 'localhost',
+  user      : 'root',
+  password  : 'rlaqhdnjs96',
+  database  : 'ncs15'
+});
+
+conn.connect();
+
 var app = express();
 
 app.set('view engine', 'pug');
