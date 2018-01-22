@@ -288,7 +288,7 @@ app.get('/schedule/:label', function(req,res){
       }
     }
   });
-
+})
 app.listen(8001, function (){
   console.log ('Connected 8001 port!!!');
 });
