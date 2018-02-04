@@ -26,6 +26,8 @@ var url_lms = "https://www.kau.ac.kr/page/login.jsp?target_page=act_Lms_Check.js
 var total_result;
 var result = 1;
 var result_1;
+var result_now_g;
+var result_now_1;
 var result_forum;
 var result_assign_name;
 var result_assign_info;
@@ -35,6 +37,7 @@ var temp_re = new Array();
 var temp_result = new Array();
 var temp_result_1 = new Array();
 var temp_result_2 = new Array();
+var now_g_result_1 = new Array();
 
 function delay(time) {
    return new Promise(function(resolve) {
@@ -322,6 +325,93 @@ app.get('/DBupdate', function(req, res){
   });
 })
 
+app.post('/grade/now', function(req, res){
+  console.log("@" + req.method + " " + req.url);
+
+  var id_req = req.body.studentNum;
+  var pwd_req = req.body.password;
+
+  (async () => {
+
+    url = "https://www.kau.ac.kr/page/login.jsp?ppage=&target_page=act_Portal_Check.jsp@chk1-1"
+    // url_grade = "http://127.0.0.1:3001/grade_al.html"; //test를 위한 것
+
+    const browser = await puppeteer.launch({headless : false, args: ['--no-sandbox', '--disable-setuid-sandbox']});
+    const page = await browser.newPage();
+    page.on('dialog', async dialog => {
+      await dialog.dismiss();
+    });
+
+    // await page.goto(url_grade); //test 를 위한 것
+    await page.goto(url);
+    await page.type("[name=p_id]", id_req); // id찾아서 넣기
+    await page.type("[name=p_pwd]", pwd_req); // 비밀번호 찾아서 넣기
+    await page.click("body > div.aside > div.articel > table:nth-child(2) > tbody > tr:nth-child(3) > td > form > table > tbody > tr:nth-child(3) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr > td:nth-child(2) > a > img") // 로그인 버튼 클릭
+    await delay(5000);
+    await page.goto("https://portal.kau.ac.kr/sugang/GradHakList.jsp");
+
+    result_hakgi = await page.evaluate(() => {
+      const hakgi = Array.from(document.getElementsByTagName('div'));
+      return hakgi.map(hakgi => hakgi.textContent);
+    });
+    // var num = table.length;
+    result_grade = await page.evaluate(() => {
+      const temp = document.querySelectorAll(' .table1 tr.tr_1 td');
+      const grade = Array.from(temp);
+      return grade.map(grade => grade.textContent);
+    });
+
+    result_ranking = await page.evaluate(() => {
+      const ranking = Array.from(document.querySelectorAll(' .table1 .tr .tr_1'));
+      return ranking.map(ranking => ranking.textContent);
+    });
+
+
+    browser.close();
+
+    //hakgi 특수문자 제거
+    result_hakgi = String(result_hakgi[0]);
+    result_hakgi = result_hakgi.split(' ');
+    result_hakgi[0] = result_hakgi[0].trim();
+    result_hakgi = result_hakgi[0] + ' ' + result_hakgi[1];
+
+    //grade 특수문자 제거
+    result_grade = String(result_grade);
+    result_grade = result_grade.replace(/:/g,',');
+
+    //ranking 특수문자 제거
+    result_ranking = String(result_ranking);
+    result_ranking = result_ranking.replace(/:/g,',');
+
+    var objJSONAArr = new Array();
+
+    result_grade = result_grade.split(',');
+    result_ranking = result_ranking.split(',');
+
+    for(var i = 0; i < (result_grade.length/10); i++){
+      var Hakgi = result_hakgi;
+      var Subject = result_grade[(i*10) + 1].trim();
+      var Credit = Number(result_grade[(i*10) + 3]);
+      var Grade = result_grade[(i*10) + 4];
+      var Ranking = Number(result_ranking[4]);
+      if(Ranking == ''){
+        Ranking = Number(0);
+      }
+
+      now_g_result_1[i] = {"subject" : Subject, "grade" : Grade, "hakgi" : Hakgi, "credit" : Credit, "ranking" : Ranking};
+    }
+
+    for(var i = 0; i < now_g_result_1.length; i++){
+      objJSONAArr.push(now_g_result_1[i]);
+    }
+
+    result_now_g = objJSONAArr;
+
+    console.log(result_now_g);
+    res.send(result_now_g);
+  })();
+
+})
 
 app.listen(8001, function (){
   console.log ('Connected 8001 port!!!');
