@@ -336,7 +336,7 @@ app.post('/grade/now', function(req, res){
     url = "https://www.kau.ac.kr/page/login.jsp?ppage=&target_page=act_Portal_Check.jsp@chk1-1"
     // url_grade = "http://127.0.0.1:3001/grade_al.html"; //test를 위한 것
 
-    const browser = await puppeteer.launch({headless : false, args: ['--no-sandbox', '--disable-setuid-sandbox']});
+    const browser = await puppeteer.launch({headless : true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
     const page = await browser.newPage();
     page.on('dialog', async dialog => {
       await dialog.dismiss();
