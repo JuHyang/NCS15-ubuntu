@@ -388,7 +388,7 @@ app.post('/grade/now', function(req, res){
     result_grade = result_grade.split(',');
     result_ranking = result_ranking.split(',');
 
-    for(var i = 0; i < (result_grade.length/10); i++){
+    for(var i = 0; i < Math.round(result_grade.length/10); i++){
       var Hakgi = result_hakgi;
       var Subject = result_grade[(i*10) + 1].trim();
       var Credit = Number(result_grade[(i*10) + 3]);
