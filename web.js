@@ -51,8 +51,9 @@ app.get("/test_post", function(req, res){
 })
 
 app.post("/login", function(req,res){
-  console.log("@" + req.method + " " + req.url);
-
+  var time_now = new Date();
+  console.log((time_now.getMonth() + 1) + "월" + time_now.getDate() + "일" + time_now.getHours() +  " : " + time_now.getMinutes() + " @" + req.method + " " + req.url);
+  
   var result_login = ""
   var id_req = req.body.studentNum;
   var pwd_req = req.body.password;
@@ -84,7 +85,8 @@ app.post("/login", function(req,res){
 
 
 app.post("/lms/data", function(req,res){
-  console.log("@" + req.method + " " + req.url);
+  var time_now = new Date(); 
+  console.log((time_now.getMonth() + 1) + "월" + time_now.getDate() + "일" + time_now.getHours() +  " : " + time_now.getMinutes() + " @" + req.method + " " + req.url);
 
   var id_req = req.body.studentNum;
   var pwd_req = req.body.password;
@@ -288,7 +290,9 @@ app.post("/lms/data", function(req,res){
 });
 
 app.get('/schedule/:label', function(req,res){
-  console.log("@" + req.method + " " + req.url);
+  var time_now = new Date();
+  console.log((time_now.getMonth() + 1) + "월" + time_now.getDate() + "일" + time_now.getHours() +  " : " + time_now.getMinutes() + " @" + req.method + " " + req.url);
+ 
   var label = req.params.label;
   var sql_label = 'SELECT * FROM scheduledata where label=?';
   conn.query(sql_label,[label], function(err, result_label, fields){
@@ -304,7 +308,9 @@ app.get('/schedule/:label', function(req,res){
 })
 
 app.get('/DBupdate', function(req, res){
-  console.log("@" + req.method + " " + req.url);
+  var time_now = new Date();
+  console.log((time_now.getMonth() + 1) + "월" + time_now.getDate() + "일" + time_now.getHours() +  " : " + time_now.getMinutes() + " @" + req.method + " " + req.url);
+  
   //디비 삭제후 다시 디비 생성
   var sql_del_table = 'DROP TABLE scheduledata';
   conn.query(sql_del_table, function(err, result){
@@ -326,7 +332,9 @@ app.get('/DBupdate', function(req, res){
 })
 
 app.post('/grade/now', function(req, res){
-  console.log("@" + req.method + " " + req.url);
+  var time_now = new Date();
+  console.log((time_now.getMonth() + 1) + "월" + time_now.getDate() + "일" + time_now.getHours() +  " : " + time_now.getMinutes() + " @" + req.method + " " + req.url);
+  
 
   var id_req = req.body.studentNum;
   var pwd_req = req.body.password;
